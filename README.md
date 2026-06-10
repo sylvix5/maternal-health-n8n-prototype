@@ -28,7 +28,7 @@ The system's decision-making logic, routing protocols, and safety rails are cali
 
 To view, test, or modify this technical prototype inside your own instance:
 
-1. Download the raw `Maternal_Health_Chatbot.json` file from this repository.
+1. Download the raw `My workflow.json` file from this repository.
 2. Open your live **n8n canvas workspace**.
 3. Click the three-dot menu icon (`...`) in the top right-hand corner.
 4. Select **Import from file** and upload the downloaded `.json` blueprint.
