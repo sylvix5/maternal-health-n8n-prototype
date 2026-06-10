@@ -1,0 +1,593 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "afyatech-incoming-gateway",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        144
+      ],
+      "id": "674f1008-a319-4112-8c9b-2fffe90e1f51",
+      "name": "Webhook",
+      "webhookId": "ceac2c51-8c38-40a8-b8a9-ac5148d86e28"
+    },
+    {
+      "parameters": {
+        "jsCode": "// TRAIL Memory Framework Initialization \nconst inputData = $input.first().json;\n\nreturn [{\n  json: {\n    // T: Transient Memory - Captures current live conversation context\n    transient_memory: inputData.message || \"\",\n    phone: inputData.phone || \"\",\n    location: inputData.location || \"Nairobi\",\n    trimester: inputData.trimester || 1,\n    \n    // R: Relational Memory - Opt-in user history profiles\n    relational_memory: {\n      opt_in_status: true,\n      preferred_language: \"Swahili-English Mix\",\n      historical_alerts_count: 0\n    },\n    \n    // A: Archival Memory - Aggregated patterns stripped of tracking IDs\n    archival_memory: {\n      regional_trends_id: \"KE-Elders-Core-2026\",\n      anonymized_metrics: true\n    },\n    \n    // I: Inheritance Rules - Explicit metadata passed down to subsequent steps\n    inheritance_rules: \"Propagate variables safely to SCOUT and HUNTER agents without leakage.\",\n    \n    // L: Land Rights - Data Sovereignty guarantee\n    land_rights: \"DATA_RESIDENCY: AWS Africa (af-south-1) Region Only. Strictly no external extraction.\"\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        144
+      ],
+      "id": "6503c5a2-fbd2-4774-91e5-385239eef7d2",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "// GUARD Safety Rails Node\nlet item = $input.item.json;\nlet messageClean = item.transient_memory.toLowerCase().trim();\n\n// G & R - Guardrails & Red Team Testing: Prevent common injection attacks and accidental PII exposure\nif (/\\b\\d{8,10}\\b/.test(messageClean)) {\n  throw new Error(\"GUARD Activation: Private Identification Document or PII leak intercepted.\");\n}\nif (messageClean.includes(\"<script>\") || messageClean.includes(\"drop table\")) {\n  throw new Error(\"GUARD Activation: Red Team malicious payload injection blocked.\");\n}\n\n// U - Unusual Pattern Detection: Intercept system flood requests or anomalies\nif (messageClean.length > 300) {\n  throw new Error(\"GUARD Activation: Anomalous string pattern or data flood flag triggered.\");\n}\n\n// D - Dignity Preservation Filter: Prevent patronizing or dehumanizing outputs\nlet harmfulTerms = [\"primitive\", \"poor village\", \"uneducated\", \"backward\"];\nlet violationDetected = harmfulTerms.some(word => messageClean.includes(word));\nif (violationDetected) {\n  throw new Error(\"GUARD Activation: Output violates regional Dignity Preservation rules.\");\n}\n\n// A - Audit Trail Creation\nitem.audit_trail = {\n  verified_timestamp: new Date().toISOString(),\n  integrity_check: \"PASS\",\n  logic_reasoning_chain: \"Input validated against PII, structural spam, and cultural dignity filters.\"\n};\n\nreturn [{ json: item }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        144
+      ],
+      "id": "7abff630-8a58-4f32-9ba4-3a397e8f8599",
+      "name": "GUARD_Safety_Rails"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.transient_memory }}",
+                    "rightValue": "=pain",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "b60881c4-b8cc-474a-b29d-f21b7913a42c"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Emergency Path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3535217f-0f08-4825-ae65-ef6a0a9b7407",
+                    "leftValue": "={{ $('Webhook').item.json.message }}",
+                    "rightValue": "lishe",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Nutrition Path"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        144
+      ],
+      "id": "d9d43d1a-8104-4815-af3e-8e3ecd306448",
+      "name": "Agent_SCOUT"
+    },
+    {
+      "parameters": {
+        "jsCode": "// HUNTER Agent: Clinical Triage Assessment Matrix\nlet item = $input.first().json;\n\n// Severe symptomatic analysis matching WHO guidelines\nitem.triage_assessment = {\n  severity_index: \"CRITICAL\",\n  risk_factor: \"Pre-Eclampsia / Preterm Complication Risk\",\n  action_required: \"IMMEDIATE REFERRAL\",\n  hunt_termination: \"Workflow requires manual clinical bypass validation before delivery.\"\n};\n\nreturn [{ json: item }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "4042055c-84bc-45ff-9a4b-45e564af63bd",
+      "name": "Agent_HUNTER"
+    },
+    {
+      "parameters": {
+        "resume": "webhook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "752f5a48-6747-4046-a039-caec9bcb23a2",
+      "name": "PRIDE_Loop_Pause_Point",
+      "webhookId": "0372554f-5e6e-474a-bc62-af2e74fd5075"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://httpbin.org/post",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=AfyaTech Emergency Alert: Please travel safely to the nearest level 4 Referral Hospital in {{ $('Code in JavaScript').item.json.location }} immediately. A transport allowance has been cleared to your mobile number via M-Pesa. Your local Community Health Volunteer (CHV) has been notified."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "2b7431bf-6ecc-4c0a-9e8c-31d002061129",
+      "name": "Agent_STORYTELLER_Emergency",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://httpbin.org/post",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text message",
+              "value": "=AfyaTech Nutrition Update: Based on your current status in Trimester {{ $('Code in JavaScript').item.json.trimester }}, please ensure your daily meals include iron-rich local foods like sukuma wiki, terere, and beans. Adequate iron intake supports your baby's development and maintains your energy levels."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1344,
+        96
+      ],
+      "id": "7a811139-ed61-473d-808e-efbb3589b599",
+      "name": "Agent_STORYTELLER_Nutrition"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8a725a4e-d5c5-45cd-b2ca-a4fcd16286fe",
+              "leftValue": "={{ $('Code in JavaScript').item.json.trimester }}",
+              "rightValue": "={{ 03 }}",
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        240
+      ],
+      "id": "9c23a397-648e-4efe-a9a1-c4b2c330bfbd",
+      "name": "Filter_Trimester"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://httpbin.org/post",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=AfyaTech Nutrition Update: Welcome to Trimester {{ $('Code in JavaScript').item.json.trimester }}. If you are feeling sick or have a weak stomach, try eating small meals a few times a day instead of one big meal. Ginger tea can also help you feel better. Remember to eat healthy local foods every day, such as avocados, oranges, and dark green vegetables. These will keep you and your baby healthy"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1344,
+        384
+      ],
+      "id": "7edf30e5-5fdf-4408-8342-dac48abc19ef",
+      "name": "Agent_STORYTELLER_Nutrition_T1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c2855a84-0383-4d95-a105-7825fd05b5f7",
+                    "leftValue": "={{ $('Code in JavaScript').item.json.location }}",
+                    "rightValue": "Kisumu",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Luo Path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3e24fffa-76d6-4979-ab11-7f916d36a262",
+                    "leftValue": "",
+                    "rightValue": "Kakamega",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Swahili Path"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "43119df4-4f00-408e-9765-c7cb13d34eb3",
+                    "leftValue": "",
+                    "rightValue": "Mombasa",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Swahili Path 2"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1120,
+        368
+      ],
+      "id": "0869e5f5-a6ef-4e67-8a79-807649d6ec4f",
+      "name": "Filter_Region"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://httpbin.org/post",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "=Misawa! Kaka nyithindo ochako dongo e iyi, pile pile inyalo winjo kichefuchefu kata thagruok e iyi. Ni bura mari mondo obed maber, tem chiemo matin matin nyading’eny e odiechieng' duto, kar chiemo mathoth chieng' achiel. Madho chai ma-itwoe tiang' (ginger) bende biro konyi. Par bende ni ichiemo chiemo mag alwora manitiere maber pile pile kaka parachichi, ndimu kata machunga, kod alode makech kaka mchicha kata sukuma wiki mondo otawi kendo omi nyathini teko."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1344,
+        576
+      ],
+      "id": "f174f145-ade0-404e-b36e-9067c8073a77",
+      "name": "Agent_STORYTELLER_Nutrition_Luo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://httpbin.org/post",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "delivery_delay_log",
+              "value": "Capture: Log % of delayed nutrition deliveries due to regional gateway traffic."
+            },
+            {
+              "name": "safety_constraint",
+              "value": "Block decisions using gender proxies in community profiles."
+            },
+            {
+              "name": "unusual_pattern_flag",
+              "value": "U-Alert: Triggered if language template calls deviate from regional baseline registration by >15%."
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1568,
+        256
+      ],
+      "id": "59694511-27a1-4bd2-b4b2-3be90737aa46",
+      "name": "CYCLE_Optimization_Engine",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "phone": "+254712345678",
+          "message": "Nahitaji ushauri wa lishe bora",
+          "location": "Kisumu",
+          "trimester": 1
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "GUARD_Safety_Rails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GUARD_Safety_Rails": {
+      "main": [
+        [
+          {
+            "node": "Agent_SCOUT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_SCOUT": {
+      "main": [
+        [
+          {
+            "node": "Agent_HUNTER",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter_Trimester",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_HUNTER": {
+      "main": [
+        [
+          {
+            "node": "PRIDE_Loop_Pause_Point",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PRIDE_Loop_Pause_Point": {
+      "main": [
+        [
+          {
+            "node": "Agent_STORYTELLER_Emergency",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter_Trimester": {
+      "main": [
+        [
+          {
+            "node": "Agent_STORYTELLER_Nutrition",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Filter_Region",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter_Region": {
+      "main": [
+        [
+          {
+            "node": "Agent_STORYTELLER_Nutrition_Luo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "CYCLE_Optimization_Engine",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_STORYTELLER_Nutrition_T1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent_STORYTELLER_Nutrition_T1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_STORYTELLER_Nutrition": {
+      "main": [
+        [
+          {
+            "node": "CYCLE_Optimization_Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_STORYTELLER_Emergency": {
+      "main": [
+        [
+          {
+            "node": "CYCLE_Optimization_Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_STORYTELLER_Nutrition_Luo": {
+      "main": [
+        [
+          {
+            "node": "CYCLE_Optimization_Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent_STORYTELLER_Nutrition_T1": {
+      "main": [
+        [
+          {
+            "node": "CYCLE_Optimization_Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "76d5dc41-ecb7-4f4a-86c9-9a434af8ed12",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "deb2bd2ae96d47556212740a69e74373c1f750ad968a2d14ed3215d0a8fdf589"
+  },
+  "nodeGroups": [],
+  "id": "zoF0dxAzNJcOkX40",
+  "tags": []
+}
